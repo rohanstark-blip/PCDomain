@@ -11,7 +11,7 @@ import { AiChatAssistant } from '../ui/AiChatAssistant.jsx';
 export function PCBuilder({ initialBuild, setBuildToLoad }) {
     const { user: currentUser } = useUser();
     const [build, setBuild] = useState({
-        cpu: null, motherboard: null, ram: null, storage: null, gpu: null, psu: null,
+        cpu: null, motherboard: null, ram: null, storage: null, gpu: null, psu: null, case: null, monitor: null, keyboard: null, mouse: null,
     });
 
     const [compatibility, setCompatibility] = useState([]);
@@ -41,7 +41,7 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
 
     const handlePopulateBuild = (suggestedIds) => {
         const newBuild = {
-            cpu: null, motherboard: null, ram: null, storage: null, gpu: null, psu: null,
+            cpu: null, motherboard: null, ram: null, storage: null, gpu: null, psu: null, case: null, monitor: null, keyboard: null, mouse: null,
         };
         for(const type in suggestedIds) {
             const componentId = suggestedIds[type];

@@ -11,8 +11,8 @@ export function FAQ() {
 
     return (
         <div className="lg:col-span-3">
-             <h4 className="text-2xl font-bold mb-2">Common Questions</h4>
-            <p className="text-gray-400 mb-6">Quick answers to help you get started.</p>
+             <h4 className="text-4xl md:text-5xl font-bold mb-2 text-center text-cyan-400" style={{fontFamily: 'cursive'}}>FREQUENTLY ASKED QUESTIONS (FAQs)</h4>
+            <p className="text-gray-400 mb-6 text-center">Quick answers to help you get started.</p>
             <div className="space-y-2">
                 {faqData.map((item, index) => (
                     <div key={index} className="glassmorphic rounded-lg">

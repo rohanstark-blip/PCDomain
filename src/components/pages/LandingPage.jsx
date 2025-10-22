@@ -9,7 +9,7 @@ import { FAQ } from '../ui/FAQ.jsx';
 import { FeatureCard } from '../ui/FeatureCard.jsx';
 import { FeedbackCard } from '../ui/FeedbackCard.jsx';
 import { featuredBuilds } from '../../data/featuredBuilds.js';
-import motherboardImage from '../../assets/Gemini_Generated_Image_7hnpcy7hnpcy7hnp-removebg-preview (1).png';
+import motherboardImage from '../../assets/professional-gaming-empty-room-studio-with-neon-lights.jpg';
 
 export function LandingPage({ setBuildToLoad }) {
     const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
@@ -19,42 +19,31 @@ export function LandingPage({ setBuildToLoad }) {
             {isHowItWorksOpen && <HowItWorksModal onClose={() => setIsHowItWorksOpen(false)} />}
             <HowItWorksFAB onOpen={() => setIsHowItWorksOpen(true)} />
             
-            <section className="container mx-auto py-4 md:py-8 px-4 relative">
-                <div className="absolute inset-0 flex items-center justify-center -z-10 overflow-hidden">
-                    <div className="w-[600px] h-[600px] rounded-full" style={{
-                        background: 'radial-gradient(circle, #1e40af 20%, #0c1a4d 60%, transparent 80%), radial-gradient(circle at 70% 30%, #4a044e, transparent 50%)',
-                        backgroundSize: '200% 200%',
-                        animation: 'rotate-planet 40s linear infinite',
-                        boxShadow: '0 0 100px 20px #1e3a8a, inset 0 0 50px #1e3a8a'
-                    }}></div>
+            <section className="container mx-auto py-4 md:py-8 px-4 relative min-h-screen flex items-center justify-center -mt-20 pt-24">
+                <div className="absolute inset-0 overflow-hidden rounded-lg -top-20">
+                    <img 
+                        src={motherboardImage} 
+                        alt="Motherboard Illustration" 
+                        className="w-full h-[calc(100%+5rem)] object-cover opacity-30" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-gray-900/70"></div>
                 </div>
-                 <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div className="text-center md:text-left md:pl-8">
-                        <h2 className="text-5xl md:text-7xl font-extrabold leading-tight opacity-0 animate-fadeInUp" style={{animationDelay: '100ms'}}>
-                            Craft Your Perfect <span className="text-white">PC</span>, <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400">Intelligently.</span>
-                        </h2>
-                        <p className="text-gray-400 mt-6 max-w-xl mx-auto md:mx-0 text-lg opacity-0 animate-fadeInUp" style={{animationDelay: '200ms'}}>
-                            Use our AI-powered builder to check compatibility, get expert advice, and create a high-performance PC with confidence. No more guesswork.
-                        </p>
-                        <Link to="/builder" className="mt-10 bg-cyan-500 hover:bg-cyan-600 transition-colors text-white font-bold text-lg py-3 px-8 rounded-full inline-flex items-center group shadow-[0_0_15px_rgba(56,189,248,0.4)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)] opacity-0 animate-fadeInUp" style={{animationDelay: '300ms'}}>
-                            Build Your PC <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-                    <div className="hidden md:block relative overflow-hidden">
-                       <div className="flex items-center justify-center h-full">
-                           <img 
-                               src={motherboardImage} 
-                               alt="Motherboard Illustration" 
-                               className="w-full max-w-2xl h-auto object-contain transform scale-125 hover:scale-135 transition-transform duration-300" 
-                           />
-                       </div>
-                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/5 to-transparent"></div>
-                    </div>
+                
+                <div className="relative z-10 text-center max-w-5xl mx-auto px-4">
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight opacity-0 animate-fadeInUp" style={{animationDelay: '100ms'}}>
+                        <span className="text-white">Craft Your Perfect</span> <span className="text-white">PC</span>, <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 whitespace-nowrap text-5xl md:text-7xl lg:text-8xl" style={{fontFamily: 'cursive'}}>INTELLIGENTLY.</span>
+                    </h2>
+                    <p className="text-gray-300 mt-6 max-w-2xl mx-auto text-lg md:text-xl opacity-0 animate-fadeInUp" style={{animationDelay: '200ms'}}>
+                        Use our AI-powered builder to check compatibility, get expert advice, and create a high-performance PC with confidence. No more guesswork.
+                    </p>
+                    <Link to="/builder" className="mt-10 bg-cyan-500 hover:bg-cyan-600 transition-colors text-white font-bold text-lg py-3 px-8 rounded-full inline-flex items-center group shadow-[0_0_15px_rgba(56,189,248,0.4)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)] opacity-0 animate-fadeInUp mx-auto" style={{animationDelay: '300ms'}}>
+                        Build Your PC <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                 </div>
             </section>
             <section id="features" className="py-20 bg-gray-950/50">
                 <div className="container mx-auto px-4 text-center">
-                    <h3 className="text-3xl font-bold mb-2">Why Choose PCDomain?</h3>
+                    <h3 className="text-4xl md:text-5xl font-bold mb-2 text-cyan-400" style={{fontFamily: 'cursive'}}>WHY CHOOSE PCDOMAIN?</h3>
                     <p className="text-gray-400 mb-12">Everything you need for a seamless build experience.</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <FeatureCard icon={<CheckCircle className="w-8 h-8 text-emerald-400"/>} title="AI Compatibility Checker" description="Our smart system automatically flags incompatible parts, ensuring your build works from day one." style={{animationDelay: '200ms'}} />
@@ -69,7 +58,7 @@ export function LandingPage({ setBuildToLoad }) {
 
             <section id="featured-builds" className="py-20">
                 <div className="container mx-auto px-4 text-center">
-                    <h3 className="text-3xl font-bold mb-2">Featured Builds</h3>
+                    <h3 className="text-4xl md:text-5xl font-bold mb-2 text-cyan-400" style={{fontFamily: 'cursive'}}>FEATURED BUILDS</h3>
                     <p className="text-gray-400 mb-12">Not sure where to start? Check out our expertly crafted builds for every need.</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {featuredBuilds.map((build, index) => (
@@ -87,7 +76,7 @@ export function LandingPage({ setBuildToLoad }) {
             
             <section id="feedback" className="py-20">
                 <div className="container mx-auto px-4 text-center">
-                    <h3 className="text-3xl font-bold mb-2">Trusted by Builders</h3>
+                    <h3 className="text-4xl md:text-5xl font-bold mb-2 text-cyan-400" style={{fontFamily: 'cursive'}}>TRUSTED BY BUILDERS</h3>
                     <p className="text-gray-400 mb-12">See what our users are saying about PCDomain.</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <FeedbackCard name="Rohan S." quote="The AI checker saved me! I almost bought a CPU that didn't fit my motherboard. PCDomain caught it instantly." style={{animationDelay: '200ms'}} />
@@ -99,20 +88,6 @@ export function LandingPage({ setBuildToLoad }) {
                         <FeedbackCard name="Kavita R." quote="The dark mode neon theme is beautiful! It's a pleasure to use, and everything is so clearly laid out. A great-looking and powerful tool." style={{animationDelay: '800ms'}} />
                         <FeedbackCard name="Rajesh B." quote="I was about to buy an underpowered PSU for a high-end GPU. The automatic compatibility warning saved me a lot of money and a huge headache." style={{animationDelay: '900ms'}} />
                     </div>
-                </div>
-            </section>
-            
-            <section id="newsletter" className="py-20">
-                <div className="container mx-auto px-4 text-center max-w-2xl">
-                     <h3 className="text-3xl font-bold mb-2">Stay Up To Date</h3>
-                    <p className="text-gray-400 mb-8">Subscribe to our newsletter for the latest component releases, build guides, and exclusive tips from our AI.</p>
-                    <form className="flex flex-col sm:flex-row gap-2" onSubmit={e => e.preventDefault()}>
-                        <div className="relative flex-grow">
-                            <Mail className="w-5 h-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                            <input type="email" placeholder="you@example.com" className="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-3 pl-10" />
-                        </div>
-                        <button type="submit" className="bg-cyan-500 hover:bg-cyan-600 transition-colors text-white font-bold py-3 px-6 rounded-lg">Subscribe</button>
-                    </form>
                 </div>
             </section>
         </div>

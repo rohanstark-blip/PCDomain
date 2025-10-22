@@ -1,6 +1,9 @@
 import React from 'react';
 import { Gamepad2, Video, Rocket, TrendingUp } from 'lucide-react';
 import gamerImage from '../../assets/photo-1534423861386-85a16f5d13fd.jpeg';
+import contentImage from '../../assets/content.jpg';
+import streamerImage from '../../assets/streamer.jpg';
+import ultimateRigImage from '../../assets/ultimate rig.jpg';
 
 const iconMap = {
     Gamepad2,
@@ -25,6 +28,24 @@ export function FeaturedBuildCard({ build, onNavigate, delay }) {
                 {build.iconType === 'Gamepad2' ? (
                     <img 
                         src={gamerImage} 
+                        alt={build.title}
+                        className="w-full h-full object-cover"
+                    />
+                ) : build.iconType === 'Video' ? (
+                    <img 
+                        src={contentImage} 
+                        alt={build.title}
+                        className="w-full h-full object-cover"
+                    />
+                ) : build.iconType === 'Rocket' ? (
+                    <img 
+                        src={ultimateRigImage} 
+                        alt={build.title}
+                        className="w-full h-full object-cover"
+                    />
+                ) : build.iconType === 'TrendingUp' ? (
+                    <img 
+                        src={streamerImage} 
                         alt={build.title}
                         className="w-full h-full object-cover"
                     />

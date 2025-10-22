@@ -6,14 +6,14 @@ import { useClerk } from '@clerk/clerk-react';
 export function Navbar({ currentUser, onSignOut }) {
     const { openSignIn, openSignUp } = useClerk();
     return (
-        <header className="sticky top-0 bg-gray-950/70 backdrop-blur-lg z-20 border-b border-cyan-400/20">
-            <nav className="container mx-auto flex justify-between items-center p-4">
+        <header className="sticky top-0 bg-transparent z-20">
+            <nav className="container mx-auto flex justify-between items-center p-4 relative">
                 <Link to="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400">PCDomain</Link>
-                <div className="hidden md:flex items-center space-x-6">
+                <div className="hidden md:flex items-center space-x-6 absolute left-1/2 transform -translate-x-1/2">
                     <a href="/#features" className="hover:text-cyan-400 transition-colors">Features</a>
                     <a href="/#featured-builds" className="hover:text-cyan-400 transition-colors">Builds</a>
-                    <a href="/#faq" className="hover:text-cyan-400 transition-colors">FAQ</a>
-                    <a href="/#feedback" className="hover:text-cyan-400 transition-colors">Feedback</a>
+                    <a href="/#faq" className="hover:text-cyan-400 transition-colors">FAQs</a>
+                    <a href="/#feedback" className="hover:text-cyan-400 transition-colors">Feedbacks</a>
                 </div>
                 <div className="flex items-center space-x-2">
                     {currentUser && !currentUser.isAnonymous ? (

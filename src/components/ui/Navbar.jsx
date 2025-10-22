@@ -1,0 +1,36 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { UserCircle, LogOut } from 'lucide-react';
+
+export function Navbar({ currentUser, onSignOut }) {
+    return (
+        <header className="sticky top-0 bg-gray-950/70 backdrop-blur-lg z-20 border-b border-cyan-400/20">
+            <nav className="container mx-auto flex justify-between items-center p-4">
+                <Link to="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400">PCDomain</Link>
+                <div className="hidden md:flex items-center space-x-6">
+                    <a href="/#features" className="hover:text-cyan-400 transition-colors">Features</a>
+                    <a href="/#featured-builds" className="hover:text-cyan-400 transition-colors">Builds</a>
+                    <a href="/#faq" className="hover:text-cyan-400 transition-colors">FAQ</a>
+                    <a href="/#feedback" className="hover:text-cyan-400 transition-colors">Feedback</a>
+                </div>
+                <div className="flex items-center space-x-2">
+                    {currentUser && !currentUser.isAnonymous ? (
+                        <>
+                            <Link to="/profile" className="bg-gray-800 hover:bg-gray-700 transition-colors px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                                <UserCircle className="w-4 h-4 mr-2" /> My Profile
+                            </Link>
+                            <button onClick={onSignOut} className="bg-rose-600 hover:bg-rose-700 transition-colors px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                                <LogOut className="w-4 h-4 mr-2" /> Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" className="bg-gray-800 hover:bg-gray-700 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Login</Link>
+                            <Link to="/signup" className="bg-cyan-500 hover:bg-cyan-600 transition-colors text-white px-4 py-2 rounded-lg text-sm font-medium">Sign Up</Link>
+                        </>
+                    )}
+                </div>
+            </nav>
+        </header>
+    );
+}

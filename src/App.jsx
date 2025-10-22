@@ -1,69 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { signInAnonymously, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './config/firebase.js';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import { LandingPage } from './components/pages/LandingPage.jsx';
 import { PCBuilder } from './components/pages/PCBuilder.jsx';
-import { LoginPage } from './components/pages/LoginPage.jsx';
-import { SignUpPage } from './components/pages/SignUpPage.jsx';
 import { ProfilePage } from './components/pages/ProfilePage.jsx';
+import { SharedBuildPage } from './components/pages/SharedBuildPage.jsx';
 import { Layout } from './components/ui/Layout.jsx';
 
-function App() {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [authReady, setAuthReady] = useState(false);
-    const [buildToLoad, setBuildToLoad] = useState(null);
+function ScrollToTop() {
+    const { pathname } = useLocation();
 
     useEffect(() => {
-        const authAndListen = async () => {
-            try {
-                await signInAnonymously(auth);
-            } catch (error) {
-                console.error("Authentication error:", error);
-            }
-            
-            const unsubscribe = onAuthStateChanged(auth, user => {
-                setCurrentUser(user);
-                setAuthReady(true);
-            });
-            return () => unsubscribe();
-        };
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    }, [pathname]);
 
-        authAndListen();
-    }, []);
+    return null;
+}
 
-    const handleSignOut = async (navigate) => {
+function App() {
+    const [buildToLoad, setBuildToLoad] = useState(null);
+
+    const handleSignOut = async (navigate, signOut) => {
         try {
-            await signOut(auth);
+            await signOut();
             navigate('/');
         } catch (error) {
             console.error("Sign out error:", error);
         }
     };
 
-    if (!authReady) {
-        return null;
-    }
-
     return (
         <Router>
+            <ScrollToTop />
             <Routes>
-                <Route path="/" element={<LayoutWrapper currentUser={currentUser} onSignOut={handleSignOut}><LandingPage setBuildToLoad={setBuildToLoad} /></LayoutWrapper>} />
-                <Route path="/builder" element={<LayoutWrapper currentUser={currentUser} onSignOut={handleSignOut}><PCBuilder initialBuild={buildToLoad} setBuildToLoad={setBuildToLoad} /></LayoutWrapper>} />
-                <Route path="/signup" element={<SignUpPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/profile" element={<ProfilePage currentUser={currentUser} />} />
+                <Route path="/" element={<LayoutWrapper onSignOut={handleSignOut}><LandingPage setBuildToLoad={setBuildToLoad} /></LayoutWrapper>} />
+                <Route path="/builder" element={<LayoutWrapper onSignOut={handleSignOut}><PCBuilder initialBuild={buildToLoad} setBuildToLoad={setBuildToLoad} /></LayoutWrapper>} />
+                <Route path="/profile" element={<LayoutWrapper onSignOut={handleSignOut}><ProfilePage /></LayoutWrapper>} />
+                <Route path="/build/:buildId" element={<LayoutWrapper onSignOut={handleSignOut}><SharedBuildPage /></LayoutWrapper>} />
             </Routes>
         </Router>
     );
 }
 
-function LayoutWrapper({ children, currentUser, onSignOut }) {
+function LayoutWrapper({ children, onSignOut }) {
     const navigate = useNavigate();
+    const { user } = useUser();
+    const { signOut } = useClerk();
+
     return (
         <div className="bg-gray-950 min-h-screen text-white relative">
             <div className="relative z-10">
-                <Layout currentUser={currentUser} onSignOut={() => onSignOut(navigate)}>
+                <Layout currentUser={user} onSignOut={() => onSignOut(navigate, signOut)}>
                     {children}
                 </Layout>
             </div>

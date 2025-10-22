@@ -19,7 +19,7 @@ export function FeaturedBuildCard({ build, onNavigate, delay }) {
     const IconComponent = iconMap[build.iconType];
     
     return (
-        <div style={{animationDelay: `${delay}ms`}} className="glassmorphic rounded-lg text-left transform hover:-translate-y-2 transition-transform duration-300 opacity-0 animate-fadeInUp flex flex-col glowing-border overflow-hidden">
+        <div style={{animationDelay: `${delay}ms`}} className="glassmorphic rounded-lg text-left transform hover:-translate-y-2 transition-transform duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden">
             {/* Image Section */}
             <div className="relative h-48 w-full">
                 {build.iconType === 'Gamepad2' ? (

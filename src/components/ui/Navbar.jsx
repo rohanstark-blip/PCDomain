@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { UserCircle, LogOut } from 'lucide-react';
+import { useClerk } from '@clerk/clerk-react';
 
 export function Navbar({ currentUser, onSignOut }) {
+    const { openSignIn, openSignUp } = useClerk();
     return (
         <header className="sticky top-0 bg-gray-950/70 backdrop-blur-lg z-20 border-b border-cyan-400/20">
             <nav className="container mx-auto flex justify-between items-center p-4">
@@ -24,10 +26,9 @@ export function Navbar({ currentUser, onSignOut }) {
                             </button>
                         </>
                     ) : (
-                        <>
-                            <Link to="/login" className="bg-gray-800 hover:bg-gray-700 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Login</Link>
-                            <Link to="/signup" className="bg-cyan-500 hover:bg-cyan-600 transition-colors text-white px-4 py-2 rounded-lg text-sm font-medium">Sign Up</Link>
-                        </>
+                        <button onClick={() => openSignIn()} className="bg-cyan-500 hover:bg-cyan-600 transition-colors text-white px-4 py-2 rounded-lg text-sm font-medium">
+                            Get Started
+                        </button>
                     )}
                 </div>
             </nav>

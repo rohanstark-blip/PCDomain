@@ -4,7 +4,7 @@ import { PackageOpen, CheckCircle, Gauge } from 'lucide-react';
 export function HowItWorksModal({ onClose }) {
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fadeInUp" style={{ animationDuration: '0.3s' }}>
-            <div className="glassmorphic rounded-xl p-8 shadow-2xl w-full max-w-2xl m-4 relative glowing-border">
+            <div className="glassmorphic rounded-xl p-8 shadow-2xl w-full max-w-2xl m-4 relative">
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
                 <h2 className="text-2xl font-bold text-cyan-400 mb-6 text-center">How It Works</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">

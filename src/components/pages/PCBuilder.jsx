@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Wand2, Save, Loader } from 'lucide-react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db, appId } from '../../config/firebase.js';
+import { Home, Wand2, Save, Loader, Share2 } from 'lucide-react';
+import { useUser } from '@clerk/clerk-react';
+import { api } from '../../config/api.js';
 import { componentData } from '../../data/componentData.js';
 import { SuggestBuildModal } from '../ui/SuggestBuildModal.jsx';
 import { ComponentSelector } from '../ui/ComponentSelector.jsx';
 import { BuildSummary } from '../ui/BuildSummary.jsx';
 import { AiChatAssistant } from '../ui/AiChatAssistant.jsx';
 
-export function PCBuilder({ currentUser, initialBuild, setBuildToLoad }) {
+export function PCBuilder({ initialBuild, setBuildToLoad }) {
+    const { user: currentUser } = useUser();
     const [build, setBuild] = useState({
         cpu: null, motherboard: null, ram: null, storage: null, gpu: null, psu: null,
     });
-    
+
     const [compatibility, setCompatibility] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [showStatus, setShowStatus] = useState({ show: false, message: '', type: 'success' });
     const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false);
+    const [currentBuildId, setCurrentBuildId] = useState(null);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         if(initialBuild) {
@@ -47,8 +53,27 @@ export function PCBuilder({ currentUser, initialBuild, setBuildToLoad }) {
         setBuild(newBuild);
     };
     
+    const handleShareBuild = async () => {
+        if (!currentBuildId) {
+            setShowStatus({ show: true, message: 'Please save your build first to share it.', type: 'error' });
+            setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
+            return;
+        }
+
+        const shareUrl = `${window.location.origin}/build/${currentBuildId}`;
+
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            setShowStatus({ show: true, message: 'Share link copied to clipboard!', type: 'success' });
+            setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
+        } catch (error) {
+            setShowStatus({ show: true, message: 'Failed to copy link. Try again.', type: 'error' });
+            setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
+        }
+    };
+
     const handleSaveBuild = async () => {
-        if (!currentUser || currentUser.isAnonymous) {
+        if (!currentUser) {
             setShowStatus({ show: true, message: 'Please log in to save your build.', type: 'error' });
             setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
             return;
@@ -62,25 +87,19 @@ export function PCBuilder({ currentUser, initialBuild, setBuildToLoad }) {
         }
 
         try {
-            const userRef = doc(db, `/artifacts/${appId}/users`, currentUser.uid);
-            const userDoc = await getDoc(userRef);
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                const createdAt = new Date();
-                const newBuild = {
-                    name: `Build saved on ${createdAt.toLocaleDateString()}`,
-                    totalPrice,
-                    components: build,
-                    createdAt: {
-                        seconds: Math.floor(createdAt.getTime() / 1000),
-                        nanoseconds: (createdAt.getTime() % 1000) * 1000000,
-                    }
-                };
-                const updatedBuilds = [...(userData.savedBuilds || []), newBuild];
-                await updateDoc(userRef, { savedBuilds: updatedBuilds });
-                setShowStatus({ show: true, message: 'Build saved successfully!', type: 'success' });
-                setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
-            }
+            const createdAt = new Date();
+            const buildData = {
+                name: `Build saved on ${createdAt.toLocaleDateString()}`,
+                totalPrice,
+                components: build,
+                email: currentUser.emailAddresses[0]?.emailAddress
+            };
+
+            const result = await api.saveBuild(currentUser.id, buildData);
+            setCurrentBuildId(result.buildId);
+
+            setShowStatus({ show: true, message: 'Build saved successfully!', type: 'success' });
+            setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
         } catch (error) {
             console.error("Error saving build:", error);
             setShowStatus({ show: true, message: 'Error saving build. Please try again.', type: 'error' });
@@ -121,17 +140,22 @@ export function PCBuilder({ currentUser, initialBuild, setBuildToLoad }) {
                         {showStatus.message}
                     </div>
                 )}
-                <main className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-                    <div className="lg:col-span-2 glassmorphic rounded-xl p-6 shadow-2xl opacity-0 animate-fadeInUp glowing-border" style={{animationDelay: '100ms'}}>
+                <main className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 glassmorphic rounded-xl p-6 shadow-2xl">
                         <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
                             <h2 className="text-2xl font-bold text-cyan-300">Build Your PC</h2>
-                            <div className="flex gap-2">
-                                <button onClick={() => setIsSuggestModalOpen(true)} className="bg-fuchsia-600 hover:bg-fuchsia-700 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center">
-                                    <Wand2 className="w-4 h-4 mr-2" /> ✨ Suggest a Build
+                            <div className="flex flex-wrap gap-2">
+                                <button onClick={() => setIsSuggestModalOpen(true)} className="bg-fuchsia-600 hover:bg-fuchsia-700 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center text-sm">
+                                    <Wand2 className="w-4 h-4 mr-2" /> Suggest
                                 </button>
-                                <button onClick={handleSaveBuild} className="bg-emerald-600 hover:bg-emerald-700 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center">
-                                    <Save className="w-4 h-4 mr-2" /> Save Build
+                                <button onClick={handleSaveBuild} className="bg-emerald-600 hover:bg-emerald-700 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center text-sm">
+                                    <Save className="w-4 h-4 mr-2" /> Save
                                 </button>
+                                {currentBuildId && (
+                                    <button onClick={handleShareBuild} className="bg-cyan-600 hover:bg-cyan-700 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center text-sm">
+                                        <Share2 className="w-4 h-4 mr-2" /> Share
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div className="space-y-4">
@@ -143,7 +167,7 @@ export function PCBuilder({ currentUser, initialBuild, setBuildToLoad }) {
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-col gap-8 opacity-0 animate-fadeInUp" style={{animationDelay: '200ms'}}>
+                    <div className="flex flex-col gap-8">
                        <BuildSummary build={build} totalPrice={totalPrice} compatibility={compatibility} />
                        <AiChatAssistant build={build} />
                     </div>

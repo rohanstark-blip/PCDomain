@@ -15,10 +15,9 @@ export function AiChatAssistant({ build }) {
 
     useEffect(scrollToBottom, [messages]);
     
-    const callGeminiAPI = async (prompt) => {
+    const callAI = async (prompt) => {
         setIsLoading(true);
-        const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ""; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        const apiKey = import.meta.env.VITE_ANANNAS_API_KEY || "sk-cr-f07b1930043840469540da0a31903dca";
 
         let buildContext = "The user is building a PC. Here are the components they've selected so far:\n";
         let hasComponents = false;
@@ -31,17 +30,26 @@ export function AiChatAssistant({ build }) {
         if (!hasComponents) {
             buildContext = "The user has not selected any PC components yet.\n";
         }
-        
-        const systemPrompt = `You are a friendly and knowledgeable PC building expert. Your goal is to help users make informed decisions about their PC parts. Be concise and helpful. Don't mention you are an AI.`;
-        const fullPrompt = `${buildContext}\nUser's question: "${prompt}"`;
 
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch("https://api.anannas.ai/v1/chat/completions", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: fullPrompt }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    model: "z-ai/glm-4.6",
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are a friendly and knowledgeable PC building expert. Your goal is to help users make informed decisions about their PC parts. Be concise and helpful. Don't mention you are an AI."
+                        },
+                        {
+                            role: "user",
+                            content: `${buildContext}\n\nUser's question: "${prompt}"`
+                        }
+                    ]
                 })
             });
 
@@ -50,10 +58,10 @@ export function AiChatAssistant({ build }) {
             }
 
             const result = await response.json();
-            const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
+            const text = result.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
             setMessages(prev => [...prev, { from: 'ai', text }]);
         } catch (error) {
-            console.error("Gemini API call error:", error);
+            console.error("AI API call error:", error);
             setMessages(prev => [...prev, { from: 'ai', text: "Sorry, I'm having trouble connecting right now." }]);
         } finally {
             setIsLoading(false);
@@ -66,12 +74,12 @@ export function AiChatAssistant({ build }) {
         
         const newMessages = [...messages, { from: 'user', text: input }];
         setMessages(newMessages);
-        callGeminiAPI(input);
+        callAI(input);
         setInput('');
     };
 
     return (
-        <div className="glassmorphic rounded-xl shadow-2xl flex flex-col h-[30rem] glowing-border">
+        <div className="glassmorphic rounded-xl shadow-2xl flex flex-col h-[30rem]">
             <h3 className="text-xl font-bold p-4 border-b border-cyan-400/20 text-cyan-300 flex items-center"><Bot className="w-5 h-5 mr-2"/> AI Assistant</h3>
             <div className="flex-grow p-4 overflow-y-auto space-y-4">
                 {messages.map((msg, index) => (

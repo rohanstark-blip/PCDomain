@@ -3,7 +3,7 @@ import { Thermometer } from 'lucide-react';
 
 export function ComponentSpotlight() {
     return (
-        <div className="lg:col-span-2 glassmorphic p-6 rounded-lg glowing-border">
+        <div className="lg:col-span-2 glassmorphic p-6 rounded-lg">
             <h4 className="text-2xl font-bold mb-2">Component Spotlight</h4>
             <p className="text-gray-400 mb-6">Today's hottest hardware.</p>
             <div className="bg-gray-800/50 rounded-lg p-4 flex items-center gap-4">

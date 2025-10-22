@@ -15,18 +15,23 @@ export function BuildSummary({ build, totalPrice, compatibility }) {
         setPerformanceAnalysis('');
 
         const prompt = `Analyze the gaming and productivity performance of a PC with a ${build.cpu.name} and a ${build.gpu.name}. Provide a concise, one-paragraph summary for a beginner. Mention what kind of gaming resolution (e.g., 1080p, 1440p, 4K) and settings it would be good for.`;
-        
+
         try {
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            const response = await fetch(apiUrl, {
+            const apiKey = import.meta.env.VITE_ANANNAS_API_KEY || "sk-cr-f07b1930043840469540da0a31903dca";
+            const response = await fetch("https://api.anannas.ai/v1/chat/completions", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "z-ai/glm-4.6",
+                    messages: [{ role: "user", content: prompt }]
+                })
             });
             if (!response.ok) throw new Error("API call failed");
             const result = await response.json();
-            const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            const text = result.choices?.[0]?.message?.content;
             setPerformanceAnalysis(text || "Could not generate analysis.");
         } catch (error) {
             console.error(error);
@@ -37,7 +42,7 @@ export function BuildSummary({ build, totalPrice, compatibility }) {
     };
     
     return (
-        <div className="glassmorphic rounded-xl p-6 shadow-2xl glowing-border">
+        <div className="glassmorphic rounded-xl p-6 shadow-2xl">
             <h3 className="text-xl font-bold mb-4 text-cyan-300">Build Summary</h3>
             <div className="space-y-4">
                 <div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Home, Wand2, Save, Loader, Share2 } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
+import { useLocation } from 'react-router-dom';
 import { api } from '../../config/api.js';
 import { componentData } from '../../data/componentData.js';
 import { SuggestBuildModal } from '../ui/SuggestBuildModal.jsx';
@@ -10,6 +11,7 @@ import { AiChatAssistant } from '../ui/AiChatAssistant.jsx';
 
 export function PCBuilder({ initialBuild, setBuildToLoad }) {
     const { user: currentUser } = useUser();
+    const location = useLocation();
     const [build, setBuild] = useState({
         cpu: null, motherboard: null, ram: null, storage: null, gpu: null, psu: null, case: null, monitor: null, keyboard: null, mouse: null,
     });
@@ -57,11 +59,16 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
     }, [build]);
 
     useEffect(() => {
-        if(initialBuild) {
+        // Check for build from router state first (ProfilePage, SharedBuildPage)
+        const stateInitialBuild = location.state?.initialBuild;
+
+        if(stateInitialBuild) {
+            setBuild(stateInitialBuild);
+        } else if(initialBuild) {
             setBuild(initialBuild);
-            setBuildToLoad(null);
+            if(setBuildToLoad) setBuildToLoad(null);
         }
-    }, [initialBuild, setBuildToLoad]);
+    }, [initialBuild, setBuildToLoad, location.state]);
 
     const handleSelectComponent = (type, component) => {
         setBuild(prevBuild => ({ ...prevBuild, [type]: component }));
@@ -111,9 +118,12 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
             return;
         }
 
-        const buildIsComplete = Object.values(build).every(component => component !== null);
-        if (!buildIsComplete) {
-            setShowStatus({ show: true, message: 'Please select all components before saving.', type: 'error' });
+        // Check only required components (not monitor, keyboard, mouse)
+        const requiredComponents = ['cpu', 'motherboard', 'ram', 'storage', 'gpu', 'psu', 'case'];
+        const requiredComplete = requiredComponents.every(type => build[type] !== null);
+
+        if (!requiredComplete) {
+            setShowStatus({ show: true, message: 'Please select all required components before saving.', type: 'error' });
             setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
             return;
         }
@@ -128,7 +138,8 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
             };
 
             const result = await api.saveBuild(currentUser.id, buildData);
-            setCurrentBuildId(result.buildId);
+            const buildId = result.buildId || result.build?._id;
+            setCurrentBuildId(buildId);
 
             setShowStatus({ show: true, message: 'Build saved successfully!', type: 'success' });
             setTimeout(() => setShowStatus({ show: false, message: '', type: '' }), 3000);
@@ -191,14 +202,31 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
                             </div>
                         </div>
                         <div className="space-y-4">
-                            {Object.keys(build).map((type, index) => (
-                                <div key={type} ref={(el) => elementsRef.current[index + 1] = el} className="opacity-0">
-                                    <ComponentSelector
-                                        type={type} options={componentData[type]} selected={build[type]}
-                                        onSelect={handleSelectComponent} onRemove={handleRemoveComponent}
-                                    />
-                                </div>
-                            ))}
+                            {Object.keys(build).map((type, index) => {
+                                const requiredComponents = ['cpu', 'motherboard', 'ram', 'storage', 'gpu', 'psu', 'case'];
+                                const showOptionalHeader = type === 'monitor' && index > 0;
+
+                                return (
+                                    <React.Fragment key={type}>
+                                        {showOptionalHeader && (
+                                            <div className="pt-6 pb-2">
+                                                <h3 className="text-xl font-bold text-gray-400 text-center">
+                                                    Additional Components (Optional)
+                                                </h3>
+                                                <p className="text-sm text-gray-500 text-center mt-1">
+                                                    Enhance your setup with these peripherals
+                                                </p>
+                                            </div>
+                                        )}
+                                        <div ref={(el) => elementsRef.current[index + 1] = el} className="opacity-0">
+                                            <ComponentSelector
+                                                type={type} options={componentData[type]} selected={build[type]}
+                                                onSelect={handleSelectComponent} onRemove={handleRemoveComponent}
+                                            />
+                                        </div>
+                                    </React.Fragment>
+                                );
+                            })}
                         </div>
                     </div>
                     <div className="flex flex-col gap-8">

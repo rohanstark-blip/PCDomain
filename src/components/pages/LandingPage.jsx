@@ -99,7 +99,7 @@ export function LandingPage({ setBuildToLoad }) {
                             <FeatureCard icon={<HardDrive className="w-8 h-8 text-fuchsia-400"/>} title="Vast Component Library" description="We have an extensive, up-to-date database of CPUs, GPUs, motherboards, and more." style={{animationDelay: '400ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[5] = el} className="opacity-0">
-                            <FeatureCard icon={<TrendingUp className="w-8 h-8 text-lime-400"/>} title="Real-Time Price Tracking" description="Component prices are updated regularly, ensuring you get the most accurate cost for your build." style={{animationDelay: '500ms'}} />
+                            <FeatureCard icon={<TrendingUp className="w-8 h-8 text-lime-400"/>} title="Real-Time Price Tracking" description="Component prices are updated regularly to reflect current market rates, ensuring you get the most accurate cost for your build." style={{animationDelay: '500ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[6] = el} className="opacity-0">
                             <FeatureCard icon={<Save className="w-8 h-8 text-rose-400"/>} title="Save & Load Builds" description="Create an account to save your builds, come back to them anytime, and load them for editing." style={{animationDelay: '600ms'}} />

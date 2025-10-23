@@ -1,5 +1,6 @@
 import React from 'react';
 import { Gamepad2, Video, Rocket, TrendingUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import gamerImage from '../../assets/photo-1534423861386-85a16f5d13fd.jpeg';
 import contentImage from '../../assets/content.jpg';
 import streamerImage from '../../assets/streamer.jpg';
@@ -12,17 +13,18 @@ const iconMap = {
     TrendingUp
 };
 
-export function FeaturedBuildCard({ build, onNavigate, delay }) {
+export function FeaturedBuildCard({ build, setBuildToLoad, delay }) {
+    const navigate = useNavigate();
+
     const handleLoad = () => {
-        if(window.confirm(`This will replace your current build. Are you sure you want to load the "${build.title}"?`)) {
-            onNavigate('builder', build.buildData);
-        }
+        setBuildToLoad(build.buildData);
+        navigate('/builder');
     };
     
     const IconComponent = iconMap[build.iconType];
     
     return (
-        <div style={{animationDelay: `${delay}ms`}} className="group glassmorphic rounded-lg text-left transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-fuchsia-500/20 transition-all duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden border border-gray-800 hover:border-fuchsia-500/50">
+        <div style={{animationDelay: `${delay}ms`}} className="group glassmorphic rounded-lg text-left transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-fuchsia-500/20 transition-all duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden border border-gray-800 hover:border-fuchsia-500/50 min-h-[700px]">
             {/* Image Section */}
             <div className="relative h-48 w-full overflow-hidden">
                 {build.iconType === 'Gamepad2' ? (

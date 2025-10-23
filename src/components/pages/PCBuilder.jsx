@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Home, Wand2, Save, Loader, Share2 } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { api } from '../../config/api.js';
@@ -19,10 +19,42 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
     const [showStatus, setShowStatus] = useState({ show: false, message: '', type: 'success' });
     const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false);
     const [currentBuildId, setCurrentBuildId] = useState(null);
+    const elementsRef = useRef([]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fadeInUp');
+                        entry.target.style.opacity = '1';
+                    }
+                });
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            }
+        );
+
+        elementsRef.current.forEach((element) => {
+            if (element) {
+                observer.observe(element);
+            }
+        });
+
+        return () => {
+            elementsRef.current.forEach((element) => {
+                if (element) {
+                    observer.unobserve(element);
+                }
+            });
+        };
+    }, [build]);
 
     useEffect(() => {
         if(initialBuild) {
@@ -141,7 +173,7 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
                     </div>
                 )}
                 <main className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 glassmorphic rounded-xl p-6 shadow-2xl">
+                    <div className="lg:col-span-2 glassmorphic rounded-xl p-6 shadow-2xl opacity-0" ref={(el) => elementsRef.current[0] = el}>
                         <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
                             <h2 className="text-2xl font-bold text-cyan-300">Build Your PC</h2>
                             <div className="flex flex-wrap gap-2">
@@ -159,17 +191,23 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
                             </div>
                         </div>
                         <div className="space-y-4">
-                            {Object.keys(build).map(type => (
-                                <ComponentSelector
-                                    key={type} type={type} options={componentData[type]} selected={build[type]}
-                                    onSelect={handleSelectComponent} onRemove={handleRemoveComponent}
-                                />
+                            {Object.keys(build).map((type, index) => (
+                                <div key={type} ref={(el) => elementsRef.current[index + 1] = el} className="opacity-0">
+                                    <ComponentSelector
+                                        type={type} options={componentData[type]} selected={build[type]}
+                                        onSelect={handleSelectComponent} onRemove={handleRemoveComponent}
+                                    />
+                                </div>
                             ))}
                         </div>
                     </div>
                     <div className="flex flex-col gap-8">
-                       <BuildSummary build={build} totalPrice={totalPrice} compatibility={compatibility} />
-                       <AiChatAssistant build={build} />
+                       <div ref={(el) => elementsRef.current[11] = el} className="opacity-0">
+                           <BuildSummary build={build} totalPrice={totalPrice} compatibility={compatibility} />
+                       </div>
+                       <div ref={(el) => elementsRef.current[12] = el} className="opacity-0">
+                           <AiChatAssistant build={build} />
+                       </div>
                     </div>
                 </main>
             </div>

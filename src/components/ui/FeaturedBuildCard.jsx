@@ -22,38 +22,39 @@ export function FeaturedBuildCard({ build, onNavigate, delay }) {
     const IconComponent = iconMap[build.iconType];
     
     return (
-        <div style={{animationDelay: `${delay}ms`}} className="glassmorphic rounded-lg text-left transform hover:-translate-y-2 transition-transform duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden">
+        <div style={{animationDelay: `${delay}ms`}} className="group glassmorphic rounded-lg text-left transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-fuchsia-500/20 transition-all duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden border border-gray-800 hover:border-fuchsia-500/50">
             {/* Image Section */}
-            <div className="relative h-48 w-full">
+            <div className="relative h-48 w-full overflow-hidden">
                 {build.iconType === 'Gamepad2' ? (
                     <img 
                         src={gamerImage} 
                         alt={build.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 group-hover:shadow-lg"
                     />
                 ) : build.iconType === 'Video' ? (
                     <img 
                         src={contentImage} 
                         alt={build.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 group-hover:shadow-lg"
                     />
                 ) : build.iconType === 'Rocket' ? (
                     <img 
                         src={ultimateRigImage} 
                         alt={build.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 group-hover:shadow-lg"
                     />
                 ) : build.iconType === 'TrendingUp' ? (
                     <img 
                         src={streamerImage} 
                         alt={build.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 group-hover:shadow-lg"
                     />
                 ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                        <IconComponent className={build.iconClass} />
+                        <IconComponent className={`${build.iconClass} group-hover:scale-110 transition-transform duration-300`} />
                     </div>
                 )}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
             
             {/* Content Section */}
@@ -62,8 +63,16 @@ export function FeaturedBuildCard({ build, onNavigate, delay }) {
                     <h4 className="font-bold text-xl mb-2">{build.title}</h4>
                     <p className="text-gray-400 text-sm mb-4">{build.description}</p>
                     <div className="text-xs space-y-1 text-gray-300 border-l-2 border-fuchsia-500 pl-3 mb-4">
-                        <p><strong>CPU:</strong> {build.keyComponents.cpu}</p>
-                        <p><strong>GPU:</strong> {build.keyComponents.gpu}</p>
+                        <p><strong>CPU:</strong> {build.buildData.cpu?.name || 'N/A'}</p>
+                        <p><strong>Motherboard:</strong> {build.buildData.motherboard?.name || 'N/A'}</p>
+                        <p><strong>RAM:</strong> {build.buildData.ram?.name || 'N/A'}</p>
+                        <p><strong>Storage:</strong> {build.buildData.storage?.name || 'N/A'}</p>
+                        <p><strong>GPU:</strong> {build.buildData.gpu?.name || 'N/A'}</p>
+                        <p><strong>PSU:</strong> {build.buildData.psu?.name || 'N/A'}</p>
+                        <p><strong>Case:</strong> {build.buildData.case?.name || 'N/A'}</p>
+                        <p><strong>Monitor:</strong> {build.buildData.monitor?.name || 'N/A'}</p>
+                        <p><strong>Keyboard:</strong> {build.buildData.keyboard?.name || 'N/A'}</p>
+                        <p><strong>Mouse:</strong> {build.buildData.mouse?.name || 'N/A'}</p>
                     </div>
                 </div>
                 <div className="mt-auto">

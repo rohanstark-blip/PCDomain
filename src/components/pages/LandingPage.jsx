@@ -162,28 +162,28 @@ export function LandingPage({ setBuildToLoad }) {
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div ref={(el) => sectionsRef.current[17] = el} className="opacity-0">
-                            <FeedbackCard name="Rohan S." quote="The AI checker saved me! I almost bought a CPU that didn't fit my motherboard. PCDomain caught it instantly." style={{animationDelay: '200ms'}} />
+                            <FeedbackCard name="Rohan Sharma" rating={5} quote="Dude, the AI checker literally saved my wallet! Was about to order a CPU that wouldn't even fit my motherboard. PCDomain caught it right away." style={{animationDelay: '200ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[18] = el} className="opacity-0">
-                            <FeedbackCard name="Priya K." quote="As a first-time builder, the AI assistant was a lifesaver. It answered all my questions and helped me pick the best parts for my budget." style={{animationDelay: '300ms'}} />
+                            <FeedbackCard name="Emily Thompson" rating={4.5} quote="I had zero clue what I was doing with my first build. The AI assistant basically held my hand through the whole thing. Can't recommend this enough!" style={{animationDelay: '300ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[19] = el} className="opacity-0">
-                            <FeedbackCard name="Amit J." quote="Finally, a PC builder that's actually easy to use. The interface is clean, and the real-time price updates are fantastic. Highly recommend!" style={{animationDelay: '400ms'}} />
+                            <FeedbackCard name="Amit Joshi" rating={5} quote="Honestly? Best PC builder site I've used. Super clean interface, prices update in real-time... what more do you want? 10/10." style={{animationDelay: '400ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[20] = el} className="opacity-0">
-                            <FeedbackCard name="Sneha G." quote="The 'Suggest a Build' feature is pure magic. Gave it my budget for video editing and it created a perfect parts list in seconds." style={{animationDelay: '500ms'}} />
+                            <FeedbackCard name="Sneha Gupta" rating={4.5} quote="That 'Suggest a Build' button is absolute MAGIC. Told it my video editing budget and boom - perfect parts list in like 10 seconds. Mind blown." style={{animationDelay: '500ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[21] = el} className="opacity-0">
-                            <FeedbackCard name="Vikram P." quote="I've built PCs before, but the AI Performance Analyzer is a game-changer. It gives you a clear idea of what to expect before you buy." style={{animationDelay: '600ms'}} />
+                            <FeedbackCard name="Marcus Johnson" rating={5} quote="Been building rigs for years, but this AI Performance Analyzer thing? Game changer. Finally know what FPS to expect BEFORE dropping cash." style={{animationDelay: '600ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[22] = el} className="opacity-0">
-                            <FeedbackCard name="Anjali M." quote="Being able to save my builds to my profile and come back later is so convenient. The whole experience is top-notch." style={{animationDelay: '700ms'}} />
+                            <FeedbackCard name="Anjali Mehta" rating={4} quote="Love that I can save my builds and come back whenever. Been tweaking mine for weeks lol. The whole site just... works, you know?" style={{animationDelay: '700ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[23] = el} className="opacity-0">
-                            <FeedbackCard name="Kavita R." quote="The dark mode neon theme is beautiful! It's a pleasure to use, and everything is so clearly laid out. A great-looking and powerful tool." style={{animationDelay: '800ms'}} />
+                            <FeedbackCard name="Yuki Tanaka" rating={4.5} quote="The dark mode with all the neon colors? Chef's kiss. It's gorgeous AND super easy to navigate. Finally a tool that looks as good as it works!" style={{animationDelay: '800ms'}} />
                         </div>
                         <div ref={(el) => sectionsRef.current[24] = el} className="opacity-0">
-                            <FeedbackCard name="Rajesh B." quote="I was about to buy an underpowered PSU for a high-end GPU. The automatic compatibility warning saved me a lot of money and a huge headache." style={{animationDelay: '900ms'}} />
+                            <FeedbackCard name="Rajesh Patel" rating={4} quote="Almost bought a 650W PSU for my RTX 4080 build. The compatibility warning popped up and saved me from a HUGE mistake. Thanks PCDomain!" style={{animationDelay: '900ms'}} />
                         </div>
                     </div>
                 </div>

@@ -19,17 +19,17 @@ export function LandingPage({ setBuildToLoad }) {
             {isHowItWorksOpen && <HowItWorksModal onClose={() => setIsHowItWorksOpen(false)} />}
             <HowItWorksFAB onOpen={() => setIsHowItWorksOpen(true)} />
             
-            <section className="container mx-auto py-4 md:py-8 px-4 relative min-h-screen flex items-center justify-center -mt-20 pt-24">
-                <div className="absolute inset-0 overflow-hidden rounded-lg -top-20">
-                    <img 
-                        src={motherboardImage} 
-                        alt="Motherboard Illustration" 
-                        className="w-full h-[calc(100%+5rem)] object-cover opacity-30" 
+            <section className="relative py-4 md:py-8 px-4 min-h-screen flex items-center justify-center -mt-20 pt-24">
+                <div className="absolute inset-0 overflow-hidden -top-20 left-0 right-0">
+                    <img
+                        src={motherboardImage}
+                        alt="Motherboard Illustration"
+                        className="w-full h-[calc(100%+5rem)] object-cover opacity-30"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-gray-900/70"></div>
                 </div>
-                
-                <div className="relative z-10 text-center max-w-5xl mx-auto px-4">
+
+                <div className="relative z-10 text-center max-w-5xl mx-auto px-4 container">
                     <h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight opacity-0 animate-fadeInUp" style={{animationDelay: '100ms'}}>
                         <span className="text-white">Craft Your Perfect</span> <span className="text-white">PC</span>, <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 whitespace-nowrap text-5xl md:text-7xl lg:text-8xl" style={{fontFamily: 'cursive'}}>INTELLIGENTLY.</span>
                     </h2>
@@ -60,7 +60,7 @@ export function LandingPage({ setBuildToLoad }) {
                 <div className="container mx-auto px-4 text-center">
                     <h3 className="text-4xl md:text-5xl font-bold mb-2 text-cyan-400" style={{fontFamily: 'cursive'}}>FEATURED BUILDS</h3>
                     <p className="text-gray-400 mb-12">Not sure where to start? Check out our expertly crafted builds for every need.</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
                         {featuredBuilds.map((build, index) => (
                             <FeaturedBuildCard key={index} build={build} setBuildToLoad={setBuildToLoad} delay={200 * (index + 1)} />
                         ))}

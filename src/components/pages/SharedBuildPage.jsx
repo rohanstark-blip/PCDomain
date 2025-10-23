@@ -81,7 +81,7 @@ export function SharedBuildPage() {
                                             <p className="text-xs uppercase text-gray-500 mb-1">{type}</p>
                                             <p className="font-semibold text-white">{component.name}</p>
                                         </div>
-                                        <p className="text-cyan-400 font-bold">₹{component.price.toFixed(2)}</p>
+                                        <p className="text-cyan-400 font-bold">Rs. {component.price.toFixed(2)}</p>
                                     </div>
                                 </div>
                             )
@@ -91,7 +91,7 @@ export function SharedBuildPage() {
                     <div className="border-t border-cyan-400/20 pt-6">
                         <div className="flex justify-between items-center text-2xl font-bold">
                             <span>Total Price:</span>
-                            <span className="text-cyan-400">₹{build.totalPrice.toFixed(2)}</span>
+                            <span className="text-cyan-400">Rs. {build.totalPrice.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

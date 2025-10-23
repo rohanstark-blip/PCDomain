@@ -76,7 +76,7 @@ export function FeaturedBuildCard({ build, onNavigate, delay }) {
                     </div>
                 </div>
                 <div className="mt-auto">
-                    <p className="text-2xl font-bold text-fuchsia-400 mb-4">≈ ₹{build.price.toLocaleString('en-IN')}</p>
+                    <p className="text-2xl font-bold text-fuchsia-400 mb-4">Rs. {build.price.toLocaleString('en-IN')}</p>
                     <button onClick={handleLoad} className="w-full bg-fuchsia-600 hover:bg-fuchsia-700 transition-colors text-white font-bold py-2 px-4 rounded-lg">
                         Load Build
                     </button>

@@ -25,7 +25,7 @@ RULES:
 3.  **Optimize for Use Case**: Prioritize components that benefit the user's primary use case. For 'Gaming', prioritize the GPU. For 'Video Editing', prioritize CPU core count and RAM capacity. For 'Office Work', focus on value and reliability.
 4.  **Return JSON only**: Your entire response MUST be a single, valid JSON object containing the IDs of the selected components, like this: {"cpu": "c3", "motherboard": "m1", "ram": "r1", "storage": "s1", "gpu": "g4", "psu": "p3"}`;
 
-        const userPrompt = `Available Components: ${JSON.stringify(componentData)}\n\nUser Request:\nBudget: ₹${budget}\nPrimary Use Case: ${useCase}`;
+        const userPrompt = `Available Components: ${JSON.stringify(componentData)}\n\nUser Request:\nBudget: Rs. ${budget}\nPrimary Use Case: ${useCase}`;
 
         try {
             const apiKey = import.meta.env.VITE_ANANNAS_API_KEY || "sk-cr-f07b1930043840469540da0a31903dca";
@@ -69,7 +69,7 @@ RULES:
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fadeInUp" style={{animationDuration: '0.3s'}}>
             <div className="glassmorphic rounded-xl p-8 shadow-2xl w-full max-w-md m-4">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-fuchsia-400 flex items-center"><Wand2 className="w-6 h-6 mr-2"/> ✨ AI Build Suggester</h2>
+                    <h2 className="text-2xl font-bold text-fuchsia-400 flex items-center"><Wand2 className="w-6 h-6 mr-2"/> AI Build Suggester</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-white">&times;</button>
                 </div>
                 <p className="text-gray-400 mb-6">Tell the AI your budget and what you'll use the PC for, and it will create a build for you.</p>
@@ -77,7 +77,7 @@ RULES:
                 <form onSubmit={handleSuggest}>
                     <div className="space-y-4">
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-400">Your Budget (in ₹)</label>
+                            <label className="block mb-2 text-sm font-medium text-gray-400">Your Budget (in Rs.)</label>
                             <input type="number" value={budget} onChange={e => setBudget(e.target.value)} placeholder="e.g., 100000" className="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-fuchsia-500 focus:border-fuchsia-500 block w-full p-2.5" />
                         </div>
                         <div>

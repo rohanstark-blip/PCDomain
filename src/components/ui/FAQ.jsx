@@ -15,16 +15,16 @@ export function FAQ() {
             <p className="text-gray-400 mb-6 text-center">Quick answers to help you get started.</p>
             <div className="space-y-2">
                 {faqData.map((item, index) => (
-                    <div key={index} className="glassmorphic rounded-lg">
+                    <div key={index} className="glassmorphic rounded-lg overflow-hidden">
                         <button onClick={() => toggleFAQ(index)} className="w-full flex justify-between items-center p-4 text-left font-semibold">
                             <span>{item.q}</span>
-                            <ChevronDown className={`w-5 h-5 transition-transform ${openIndex === index ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
                         </button>
-                        {openIndex === index && (
+                        <div className={`transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                             <div className="p-4 pt-0 text-gray-400 text-sm">
                                 <p>{item.a}</p>
                             </div>
-                        )}
+                        </div>
                     </div>
                 ))}
             </div>

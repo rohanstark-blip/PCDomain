@@ -40,7 +40,7 @@ export function ComponentSelector({ type, options, selected, onSelect, onRemove 
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="text-right">
-                        <p className="font-bold text-cyan-400">₹{selected.price}</p>
+                        <p className="font-bold text-cyan-400">Rs. {selected.price}</p>
                         <button onClick={() => onRemove(type)} className="text-rose-400 hover:text-rose-300 transition-colors text-sm">
                             Remove
                         </button>
@@ -70,7 +70,7 @@ export function ComponentSelector({ type, options, selected, onSelect, onRemove 
                     <option value="">Choose a {typeLabel}...</option>
                     {options.map(option => (
                         <option key={option.id} value={option.id}>
-                            {option.name} (₹{option.price})
+                            {option.name} (Rs. {option.price})
                         </option>
                     ))}
                 </select>
@@ -113,7 +113,7 @@ export function ComponentSelector({ type, options, selected, onSelect, onRemove 
                             <div className="space-y-3">
                                 <div className="flex justify-between border-b border-gray-700 pb-2">
                                     <span className="text-gray-400">Price:</span>
-                                    <span className="text-cyan-400 font-bold">₹{selectedInfo.price}</span>
+                                    <span className="text-cyan-400 font-bold">Rs. {selectedInfo.price}</span>
                                 </div>
                                 
                                 {/* Display all properties of the component */}

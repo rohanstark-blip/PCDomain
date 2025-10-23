@@ -45,8 +45,17 @@ export function BuildSummary({ build, totalPrice, compatibility }) {
         <div className="glassmorphic rounded-xl p-6 shadow-2xl">
             <h3 className="text-xl font-bold mb-4 text-cyan-300">Build Summary</h3>
             <div className="space-y-4">
+                {/* Total Price - First and Separated */}
+                <div className="pb-4 border-b-2 border-cyan-400/30">
+                     <div className="flex justify-between items-center text-2xl font-bold">
+                        <span>Total Price:</span>
+                        <span className="text-cyan-400">Rs. {totalPrice.toFixed(2)}</span>
+                    </div>
+                </div>
+
+                {/* Compatibility Check - Second */}
                 <div>
-                    <h4 className="font-semibold mb-2">Compatibility Check:</h4>
+                    <h4 className="text-2xl font-bold mb-2">Compatibility Check:</h4>
                     {hasParts && compatibility.length > 0 ? (
                         <ul className="space-y-2 text-sm">
                             {compatibility.map((issue, index) => (
@@ -59,19 +68,12 @@ export function BuildSummary({ build, totalPrice, compatibility }) {
                     ) : <p className="text-sm text-gray-400">Select components to check compatibility.</p>}
                 </div>
 
+                {/* AI Performance Analyzer - Third */}
                 <div className="border-t border-cyan-400/20 pt-4">
-                     <h4 className="font-semibold mb-2">✨ AI Performance Analyzer</h4>
-                     <button onClick={handleAnalyzePerformance} disabled={isAnalyzing || !build.cpu || !build.gpu} className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center">
+                     <button onClick={handleAnalyzePerformance} disabled={isAnalyzing || !build.cpu || !build.gpu} className="w-full bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center">
                         {isAnalyzing ? <><Loader className="w-4 h-4 mr-2 animate-spin"/> Analyzing...</> : <><Gauge className="w-4 h-4 mr-2" /> Analyze Performance</>}
                      </button>
                      {performanceAnalysis && <p className="text-sm text-gray-300 mt-3 bg-gray-800/50 p-3 rounded-lg">{performanceAnalysis}</p>}
-                </div>
-
-                <div className="border-t border-cyan-400/20 pt-4">
-                     <div className="flex justify-between items-center text-2xl font-bold">
-                        <span>Total Price:</span>
-                        <span className="text-cyan-400">₹{totalPrice.toFixed(2)}</span>
-                    </div>
                 </div>
             </div>
         </div>

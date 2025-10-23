@@ -82,7 +82,7 @@ export function ProfilePage() {
                                             <p className="font-bold text-lg">{build.name}</p>
                                             <p className="text-sm text-gray-400">CPU: {build.components.cpu.name}</p>
                                             <p className="text-sm text-gray-400">GPU: {build.components.gpu.name}</p>
-                                            <p className="text-cyan-400 font-semibold mt-1">Total: ₹{build.totalPrice.toFixed(2)}</p>
+                                            <p className="text-cyan-400 font-semibold mt-1">Total: Rs. {build.totalPrice.toFixed(2)}</p>
                                         </div>
                                         <div className="flex gap-2 flex-shrink-0">
                                             <button onClick={() => handleLoadBuild(build)} className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center text-sm">

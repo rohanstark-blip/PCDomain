@@ -18,6 +18,7 @@ const DB_NAME = 'pcdomain';
 
 let db;
 let usersCollection;
+let componentImagesCollection;
 
 const connectDB = async () => {
   try {
@@ -25,6 +26,7 @@ const connectDB = async () => {
     await client.connect();
     db = client.db(DB_NAME);
     usersCollection = db.collection('users');
+    componentImagesCollection = db.collection('componentImages');
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
@@ -171,6 +173,49 @@ app.delete('/api/users/:clerkId/builds/:buildIndex', async (req, res) => {
   } catch (error) {
     console.error('Error deleting build:', error);
     res.status(500).json({ error: 'Failed to delete build' });
+  }
+});
+
+// Get component image (check cache first)
+app.get('/api/component-image/:componentName', async (req, res) => {
+  try {
+    const { componentName } = req.params;
+
+    // Check if image is cached in database
+    const cached = await componentImagesCollection.findOne({ componentName });
+
+    if (cached) {
+      return res.json({ imageUrl: cached.imageUrl, cached: true });
+    }
+
+    // If not cached, fetch from Google API
+    const apiKey = process.env.VITE_GOOGLE_API_KEY;
+    const cx = process.env.VITE_GOOGLE_CX;
+    const query = encodeURIComponent(componentName);
+
+    const response = await fetch(
+      `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${query}&searchType=image&num=1`
+    );
+
+    const data = await response.json();
+
+    if (data.items && data.items.length > 0) {
+      const imageUrl = data.items[0].link;
+
+      // Save to database for future use
+      await componentImagesCollection.insertOne({
+        componentName,
+        imageUrl,
+        cachedAt: new Date()
+      });
+
+      return res.json({ imageUrl, cached: false });
+    }
+
+    res.status(404).json({ error: 'No image found' });
+  } catch (error) {
+    console.error('Error fetching component image:', error);
+    res.status(500).json({ error: 'Failed to fetch image' });
   }
 });
 

@@ -206,6 +206,23 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
                                 const requiredComponents = ['cpu', 'motherboard', 'ram', 'storage', 'gpu', 'psu', 'case'];
                                 const showOptionalHeader = type === 'monitor' && index > 0;
 
+                                // Filter options based on compatibility
+                                let filteredOptions = componentData[type];
+
+                                if (type === 'cpu' && build.motherboard) {
+                                    // Show only CPUs compatible with selected motherboard socket
+                                    filteredOptions = componentData[type].filter(cpu => cpu.socket === build.motherboard.socket);
+                                } else if (type === 'motherboard' && build.cpu) {
+                                    // Show only motherboards compatible with selected CPU socket
+                                    filteredOptions = componentData[type].filter(mb => mb.socket === build.cpu.socket);
+                                } else if (type === 'ram' && build.motherboard) {
+                                    // Show only RAM compatible with selected motherboard RAM type
+                                    filteredOptions = componentData[type].filter(ram => ram.type === build.motherboard.ram_type);
+                                } else if (type === 'motherboard' && build.ram) {
+                                    // Show only motherboards compatible with selected RAM type
+                                    filteredOptions = componentData[type].filter(mb => mb.ram_type === build.ram.type);
+                                }
+
                                 return (
                                     <React.Fragment key={type}>
                                         {showOptionalHeader && (
@@ -220,7 +237,7 @@ export function PCBuilder({ initialBuild, setBuildToLoad }) {
                                         )}
                                         <div ref={(el) => elementsRef.current[index + 1] = el} className="opacity-0">
                                             <ComponentSelector
-                                                type={type} options={componentData[type]} selected={build[type]}
+                                                type={type} options={filteredOptions} selected={build[type]}
                                                 onSelect={handleSelectComponent} onRemove={handleRemoveComponent}
                                             />
                                         </div>

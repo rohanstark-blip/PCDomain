@@ -98,15 +98,20 @@ export function ComponentSelector({ type, options, selected, onSelect, onRemove 
 
             {/* Info Modal */}
             {showInfoModal && selectedInfo && createPortal(
-                <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center p-4 pointer-events-auto" style={{ zIndex: 99999 }}>
+                <div
+                    className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center p-4"
+                    style={{ zIndex: 99999 }}
+                    onClick={closeModal}
+                >
                     {/* Backdrop with blur */}
-                    <div
-                        className="absolute top-0 left-0 right-0 bottom-0 bg-black/95 backdrop-blur-md pointer-events-auto"
-                        onClick={closeModal}
-                    ></div>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/95 backdrop-blur-md pointer-events-none"></div>
 
                     {/* Modal Content */}
-                    <div className="relative bg-gray-900 border border-cyan-500/30 rounded-xl p-8 max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl" style={{ zIndex: 1 }}>
+                    <div
+                        className="relative bg-gray-900 border border-cyan-500/30 rounded-xl p-8 max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+                        style={{ zIndex: 1 }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         {/* Close Button */}
                         <button 
                             onClick={closeModal}

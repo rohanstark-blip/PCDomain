@@ -37,7 +37,7 @@ RULES:
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: "z-ai/glm-4.6",
+                    model: "grok/grok-4-fast-non-reasoning",
                     messages: [
                         { role: "system", content: systemPrompt },
                         { role: "user", content: userPrompt }

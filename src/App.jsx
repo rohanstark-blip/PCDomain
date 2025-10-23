@@ -6,6 +6,7 @@ import { PCBuilder } from './components/pages/PCBuilder.jsx';
 import { ProfilePage } from './components/pages/ProfilePage.jsx';
 import { SharedBuildPage } from './components/pages/SharedBuildPage.jsx';
 import { Layout } from './components/ui/Layout.jsx';
+import { api } from './config/api.js';
 
 function ScrollToTop() {
     const { pathname } = useLocation();
@@ -48,6 +49,21 @@ function LayoutWrapper({ children, onSignOut }) {
     const navigate = useNavigate();
     const { user } = useUser();
     const { signOut } = useClerk();
+
+    // Create user in database when they first sign in
+    useEffect(() => {
+        if (user && user.id) {
+            const initializeUser = async () => {
+                try {
+                    const email = user.emailAddresses?.[0]?.emailAddress || '';
+                    await api.createUser(user.id, email);
+                } catch (error) {
+                    console.error('Error initializing user:', error);
+                }
+            };
+            initializeUser();
+        }
+    }, [user]);
 
     return (
         <div className="bg-gray-950 min-h-screen text-white relative">

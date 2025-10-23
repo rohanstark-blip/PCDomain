@@ -1,32 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Info, X } from 'lucide-react';
+import { Info, X, Loader } from 'lucide-react';
 import { componentIcons } from '../../config/componentIcons.js';
-import processorImage from '../../assets/processor.jpeg';
+
 
 export function ComponentSelector({ type, options, selected, onSelect, onRemove }) {
     const [showInfoModal, setShowInfoModal] = useState(false);
     const [selectedInfo, setSelectedInfo] = useState(null);
+    const [componentImage, setComponentImage] = useState(null);
+    const [loadingImage, setLoadingImage] = useState(false);
     
     const acronyms = ['cpu', 'ram', 'gpu', 'psu'];
     const typeLabel = acronyms.includes(type) ? type.toUpperCase() : type.charAt(0).toUpperCase() + type.slice(1);
     
     const IconComponent = componentIcons[type].component;
     const iconClassName = componentIcons[type].className;
-    
-    // Component type images
-    const componentImages = {
-        cpu: processorImage,
+
+    const fetchComponentImage = async (componentName) => {
+        setLoadingImage(true);
+        try {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
+            console.log('Fetching image for:', componentName);
+            const response = await fetch(`${API_URL}/component-image/${encodeURIComponent(componentName)}`);
+
+            const data = await response.json();
+
+            if (data.imageUrl) {
+                console.log(data.cached ? 'Using cached image from database' : 'Fetched new image and cached in database');
+                setComponentImage(data.imageUrl);
+            }
+        } catch (error) {
+            console.error('Error fetching component image:', error);
+        } finally {
+            setLoadingImage(false);
+        }
     };
-    
+
     const handleInfoClick = (component) => {
         setSelectedInfo(component);
+        setComponentImage(null);
         setShowInfoModal(true);
+        fetchComponentImage(component.name);
     };
-    
+
     const closeModal = () => {
         setShowInfoModal(false);
         setSelectedInfo(null);
+        setComponentImage(null);
     };
     
     return (
@@ -101,15 +122,25 @@ export function ComponentSelector({ type, options, selected, onSelect, onRemove 
                                 <h2 className="text-2xl font-bold text-white">{selectedInfo.name}</h2>
                             </div>
 
-                            {componentImages[type] && (
-                                <div className="flex justify-center mb-6">
+                            {/* Component Image */}
+                            <div className="flex justify-center mb-6 h-64">
+                                {loadingImage ? (
+                                    <div className="flex items-center justify-center w-64 h-64 bg-gray-800 rounded-lg">
+                                        <Loader className="w-8 h-8 animate-spin text-cyan-400" />
+                                    </div>
+                                ) : componentImage ? (
                                     <img
-                                        src={componentImages[type]}
+                                        src={componentImage}
                                         alt={selectedInfo.name}
-                                        className="w-64 h-64 object-cover rounded-lg"
+                                        className="w-64 h-64 object-contain rounded-lg bg-gray-800"
+                                        onError={(e) => { e.target.style.display = 'none'; }}
                                     />
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="w-64 h-64 bg-gray-800 rounded-lg flex items-center justify-center">
+                                        <IconComponent className={`${iconClassName} opacity-30`} style={{ width: '80px', height: '80px' }} />
+                                    </div>
+                                )}
+                            </div>
 
                             <div className="space-y-3">
                                 <div className="flex justify-between items-center border-b border-gray-700 pb-3">

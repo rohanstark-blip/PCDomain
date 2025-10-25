@@ -28,6 +28,8 @@ const connectDB = async () => {
       tlsAllowInvalidHostnames: false,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
+      minPoolSize: 1,
+      maxPoolSize: 10,
     });
     await client.connect();
     db = client.db(DB_NAME);

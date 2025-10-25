@@ -22,15 +22,7 @@ let componentImagesCollection;
 
 const connectDB = async () => {
   try {
-    const client = new MongoClient(MONGODB_URI, {
-      tls: true,
-      tlsAllowInvalidCertificates: false,
-      tlsAllowInvalidHostnames: false,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      minPoolSize: 1,
-      maxPoolSize: 10,
-    });
+    const client = new MongoClient(MONGODB_URI);
     await client.connect();
     db = client.db(DB_NAME);
     usersCollection = db.collection('users');

@@ -24,7 +24,7 @@ export function FeaturedBuildCard({ build, setBuildToLoad, delay }) {
     const IconComponent = iconMap[build.iconType];
     
     return (
-        <div style={{animationDelay: `${delay}ms`}} className="group glassmorphic rounded-lg text-left transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-fuchsia-500/20 transition-all duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden border border-gray-800 hover:border-fuchsia-500/50 min-h-[700px]">
+        <div style={{animationDelay: `${delay}ms`}} className="group glassmorphic rounded-lg text-left transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-fuchsia-500/20 transition-all duration-300 opacity-0 animate-fadeInUp flex flex-col overflow-hidden border border-gray-800 hover:border-fuchsia-500/50 min-h-[550px]">
             {/* Image Section */}
             <div className="relative h-48 w-full overflow-hidden">
                 {build.iconType === 'Gamepad2' ? (
@@ -72,9 +72,6 @@ export function FeaturedBuildCard({ build, setBuildToLoad, delay }) {
                         <p><strong>GPU:</strong> {build.buildData.gpu?.name || 'N/A'}</p>
                         <p><strong>PSU:</strong> {build.buildData.psu?.name || 'N/A'}</p>
                         <p><strong>Case:</strong> {build.buildData.case?.name || 'N/A'}</p>
-                        <p><strong>Monitor:</strong> {build.buildData.monitor?.name || 'N/A'}</p>
-                        <p><strong>Keyboard:</strong> {build.buildData.keyboard?.name || 'N/A'}</p>
-                        <p><strong>Mouse:</strong> {build.buildData.mouse?.name || 'N/A'}</p>
                     </div>
                 </div>
                 <div className="mt-auto">

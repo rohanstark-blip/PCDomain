@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Loader, PackageOpen, Trash2 } from 'lucide-react';
+import { Loader, PackageOpen, Trash2, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { api } from '../../config/api.js';
+import { CheckoutModal } from '../ui/CheckoutModal.jsx';
 
 export function ProfilePage() {
     const navigate = useNavigate();
     const { user: currentUser } = useUser();
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedBuild, setSelectedBuild] = useState(null);
 
     useEffect(() => {
         if (currentUser) {
@@ -85,6 +87,9 @@ export function ProfilePage() {
                                             <p className="text-cyan-400 font-semibold mt-1">Total: Rs. {build.totalPrice.toFixed(2)}</p>
                                         </div>
                                         <div className="flex gap-2 flex-shrink-0">
+                                            <button onClick={() => setSelectedBuild(build)} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center text-sm">
+                                                <ShoppingCart className="w-4 h-4 mr-2" /> Buy
+                                            </button>
                                             <button onClick={() => handleLoadBuild(build)} className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center text-sm">
                                                 <PackageOpen className="w-4 h-4 mr-2" /> Load
                                             </button>
@@ -101,6 +106,13 @@ export function ProfilePage() {
                     </div>
                 </div>
             </main>
+            {selectedBuild && (
+                <CheckoutModal 
+                    build={selectedBuild} 
+                    user={currentUser} 
+                    onClose={() => setSelectedBuild(null)} 
+                />
+            )}
         </div>
     );
 }
